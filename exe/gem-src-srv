@@ -1,0 +1,5 @@
+#!ruby
+
+require 'gem/src/srv'
+
+Gem::Src::Srv.start

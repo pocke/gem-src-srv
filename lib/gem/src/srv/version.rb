@@ -1,6 +1,6 @@
 module Gem
   module Src
-    module Srv
+    class Srv
       VERSION = "0.1.0"
     end
   end
