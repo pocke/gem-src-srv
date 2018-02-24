@@ -6,38 +6,28 @@ require 'open-uri'
 
 module Gem
   module Src
-    class Srv
-      def self.start
-        self.new.start
-      end
-
-      def start
-        @tested_repositories = []
-
-        srv = WEBrick::HTTPServer.new(
-          BindAddress: '127.0.0.1',
-          Port: 20080,
-        )
-        srv.mount_proc('/gem_install') do |req, resp|
-          if req.request_method != 'POST'
-            resp.status = 404
-            next
+    class Worker
+      def self.start(queue)
+        Thread.new do
+          loop do
+            spec = queue.pop
+            self.new.start(spec)
           end
-
-          clone(Marshal.load(req.body))
         end
-        trap('INT') { srv.shutdown }
-        srv.start
       end
 
-      private
+      def self.tested_repositories
+        @tested_repositories ||= []
+      end
 
-      attr_reader :spec # FIXME
+      def tested_repositories
+        self.class.tested_repositories
+      end
 
-      def clone(spec)
-        @spec = spec # FIXME
-        if IRREGULAR_REPOSITORIES.key? spec.name
-          return git_clone IRREGULAR_REPOSITORIES[spec.name]
+      def start(spec)
+        @spec = spec
+        if Srv::IRREGULAR_REPOSITORIES.key? spec.name
+          return git_clone Srv::IRREGULAR_REPOSITORIES[spec.name]
         end
 
         git_clone(spec.homepage) ||
@@ -48,10 +38,14 @@ module Gem
           git_clone(github_organization_uri(spec.name))
       end
 
+      private
+
+      attr_reader :spec
+
       def git_clone(repository)
         return if repository.nil? || repository.empty?
-        return if @tested_repositories.include? repository
-        @tested_repositories << repository
+        return if tested_repositories.include? repository
+        tested_repositories << repository
         return if github?(repository) && !github_page_exists?(repository)
 
         system 'ghq', 'get', repository
@@ -100,6 +94,32 @@ module Gem
       def api_uri_for(key)
         uri = api[Regexp.new("^#{key}_uri: (.*)$"), 1]
         uri =~ /\A(?:https?|git):\/\// ? uri : nil
+      end
+    end
+
+    class Srv
+      def self.start
+        self.new.start
+      end
+
+      def start
+        queue = Queue.new
+        Worker.start(queue)
+
+        srv = WEBrick::HTTPServer.new(
+          BindAddress: '127.0.0.1',
+          Port: 20080,
+        )
+        srv.mount_proc('/gem_install') do |req, resp|
+          if req.request_method != 'POST'
+            resp.status = 404
+            next
+          end
+
+          queue << Marshal.load(req.body)
+        end
+        trap('INT') { srv.shutdown }
+        srv.start
       end
     end
   end

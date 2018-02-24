@@ -1,7 +1,6 @@
 # frozen-string-literal: true
 
 module Gem
-
   module Src
     class Srv
       IRREGULAR_REPOSITORIES = {
