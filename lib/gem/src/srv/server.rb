@@ -1,4 +1,6 @@
 module Gem::Src::Srv
+  Spec = Struct.new(:name, :homepage)
+
   class Server
     def self.start(queue)
       self.new(queue).start
@@ -19,7 +21,8 @@ module Gem::Src::Srv
           next
         end
 
-        @queue << Marshal.load(req.body)
+        body = JSON.parse(req.body)
+        @queue << Spec.new(body['name'], body['homepage'])
       end
       trap('INT') { srv.shutdown }
       srv.start

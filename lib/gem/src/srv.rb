@@ -1,6 +1,7 @@
 require 'webrick'
 require 'net/http'
 require 'open-uri'
+require 'json'
 
 module Gem
   module Src
