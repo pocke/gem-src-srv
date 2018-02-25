@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Masataka Pocke Kuwabara"]
   spec.email         = ["kuwabara@pocke.me"]
 
-  spec.summary       = %q{}
-  spec.description   = %q{}
+  spec.summary       = %q{Run `git clone` after `gem install` concurrently.}
+  spec.description   = %q{Run `git clone` after `gem install` concurrently.}
   spec.homepage      = "https://github.com/pocke/gem-src-srv"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

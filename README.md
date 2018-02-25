@@ -1,28 +1,42 @@
 # Gem::Src::Srv
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/gem/src/srv`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Run `git clone` after `gem install` concurrently. Inspired by [gem-src](https://github.com/amatsuda/gem-src)
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'gem-src-srv'
+```bash
+$ gem install gem-src-srv
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install gem-src-srv
 
 ## Usage
 
-TODO: Write usage instructions here
+It clones a git repository after you install a gem with [ghq](https://github.com/motemen/ghq).
+
+```bash
+$ gem install rails
+$ ghq list | grep rails/rails
+github.com/rails/rails
+```
+
+Note: If you want to clone repositories with plain `git clone` command, you can send a pull-request!
+
+### Configuration
+
+You can set `GEM_SRC_SRV_PORT` and `GEM_SRC_SRV_CONCURRENCY` environment variables.
+
+See [lib/gem/src/srv/configuration.rb](https://github.com/pocke/gem-src-srv/blob/master/lib/gem/src/srv/configuration.rb).
+
+## Design
+
+gem-src is good, but it clones a repository synchronously. So it makes `gem install` slow.
+
+gem-src-srv clones a repository concurrently. So it does not block `gem install`, it's faster!
+
+### How concurrently?
+
+gem-src-srv works on Client-Server model.
+
+![img_20180225_124045652](https://user-images.githubusercontent.com/4361134/36637896-47fa1daa-1a29-11e8-828a-c37aaa36f6ac.jpg)
 
 ## Development
 
