@@ -1,7 +1,9 @@
 module Gem::Src::Srv
   class Worker
     def self.start(queue)
-      self.new(queue).start
+      Configuration::CONCURRENCY.times do
+        self.new(queue).start
+      end
     end
 
     def initialize(queue)
