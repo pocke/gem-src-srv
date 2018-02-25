@@ -3,13 +3,17 @@ require 'uri'
 require 'retryable'
 require 'json'
 
+require 'gem/src/srv/configuration'
+
+
 Gem.post_install do |installer|
   next if installer.spec.name == 'gem-src-srv'
 
   spawn('gem-src-srv', [:out, :err] => '/dev/null')
 
   Retryable.retryable(tries: 3, sleep: 0.1, on: Errno::ECONNREFUSED) do
-    uri = URI.parse('http://localhost:20080/gem_install')
+    port = Gem::Src::Srv::Configuration::PORT
+    uri = URI.parse("http://localhost:#{port}/gem_install")
     req = Net::HTTP::Post.new(uri)
     req.body = JSON.generate({
       name: installer.spec.name,

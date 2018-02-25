@@ -13,7 +13,7 @@ module Gem::Src::Srv
     def start
       srv = WEBrick::HTTPServer.new(
         BindAddress: '127.0.0.1',
-        Port: 20080,
+        Port: Configuration::PORT,
       )
       srv.mount_proc('/gem_install') do |req, resp|
         if req.request_method != 'POST'

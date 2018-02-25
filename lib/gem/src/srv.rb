@@ -2,6 +2,7 @@ require 'webrick'
 require 'net/http'
 require 'open-uri'
 require 'json'
+require 'etc'
 
 module Gem
   module Src
@@ -16,6 +17,7 @@ module Gem
 end
 
 require_relative "srv/version"
+require_relative "srv/configuration"
 require_relative "srv/irregular_repositories"
 require_relative "srv/fetcher"
 require_relative "srv/server"
