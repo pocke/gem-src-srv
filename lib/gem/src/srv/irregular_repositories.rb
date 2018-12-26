@@ -29,6 +29,7 @@ module Gem::Src::Srv
     'hirb' => 'https://github.com/cldwalker/hirb',
     'html2haml' => 'https://github.com/haml/html2haml',
     'io-console' => nil,
+    'itamae' => 'https://github.com/itamae-kitchen/itamae',
     'kaminari-actionview' => nil,
     'kaminari-activerecord' => nil,
     'kaminari-core' => nil,
