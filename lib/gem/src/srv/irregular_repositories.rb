@@ -31,7 +31,6 @@ module Gem::Src::Srv
     'houston' => 'https://github.com/nomad/houston',
     'html2haml' => 'https://github.com/haml/html2haml',
     'io-console' => nil,
-    'itamae' => 'https://github.com/itamae-kitchen/itamae',
     'kaminari-actionview' => nil,
     'kaminari-activerecord' => nil,
     'kaminari-core' => nil,
