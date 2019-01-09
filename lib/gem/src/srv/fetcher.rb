@@ -17,7 +17,8 @@ module Gem::Src::Srv
         return git_clone IRREGULAR_REPOSITORIES[spec.name]
       end
 
-      git_clone(spec.homepage) ||
+      git_clone(spec.metadata['source_code_uri']) ||
+        git_clone(spec.homepage) ||
         git_clone(github_url(spec.homepage)) ||
         git_clone(source_code_uri) ||
         git_clone(homepage_uri) ||

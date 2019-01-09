@@ -1,5 +1,5 @@
 module Gem::Src::Srv
-  Spec = Struct.new(:name, :homepage)
+  Spec = Struct.new(:name, :homepage, :metadata)
 
   class Server
     def self.start(queue)
@@ -22,7 +22,7 @@ module Gem::Src::Srv
         end
 
         body = JSON.parse(req.body)
-        @queue << Spec.new(body['name'], body['homepage'])
+        @queue << Spec.new(body['name'], body['homepage'], body['metadata'])
       end
       trap('INT') { srv.shutdown }
       srv.start

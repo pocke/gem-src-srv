@@ -15,9 +15,11 @@ Gem.post_install do |installer|
     port = Gem::Src::Srv::Configuration::PORT
     uri = URI.parse("http://localhost:#{port}/gem_install")
     req = Net::HTTP::Post.new(uri)
+
     req.body = JSON.generate({
       name: installer.spec.name,
       homepage: installer.spec.homepage,
+      metadata: installer.spec.metadata,
     })
     req.content_type = 'Application/json'
     Net::HTTP.new(uri.host, uri.port).start {|http| http.request(req) }
