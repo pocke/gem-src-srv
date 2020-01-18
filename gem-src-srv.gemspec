@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Run `git clone` after `gem install` concurrently.}
   spec.description   = %q{Run `git clone` after `gem install` concurrently.}
   spec.homepage      = "https://github.com/pocke/gem-src-srv"
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
