@@ -2,6 +2,7 @@ require 'net/http'
 require 'uri'
 require 'retryable'
 require 'json'
+require 'etc'
 
 require 'gem/src/srv/configuration'
 
